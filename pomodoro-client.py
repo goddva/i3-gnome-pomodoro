@@ -13,11 +13,6 @@ import os
 bus = SessionBus()
 
 
-def get_notification_proxy():
-    return bus.get(
-        "org.freedesktop.Notifications", "/org/freedesktop/Notifications")
-
-
 def get_pomodoro_proxy():
     return bus.get("org.gnome.Pomodoro", "/org/gnome/Pomodoro")
 
@@ -186,17 +181,12 @@ def toggle(help="Toggling function to pause/resume current pomodoro."):
         pomodoro.Pause()
 
 
-def dunst_action(action):
-    notify = get_notification_proxy()
-    notify.Notify("", 0, "", action, "", "", "", 0)
-
-
 def stop_dunst():
-    dunst_action("DUNST_COMMAND_PAUSE")
+    os.system('dunstctl set-paused true')
 
 
 def start_dunst():
-    dunst_action("DUNST_COMMAND_RESUME")
+    os.system('dunstctl set-paused false')
 
 
 def handle_state(state, old_state):
